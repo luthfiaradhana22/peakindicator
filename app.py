@@ -21,8 +21,76 @@ ORANGE_PALE = "#FDEFE4"
 INK = "#3A2418"
 
 st.markdown(
+    """
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown(
     f"""
     <style>
+    .title-wrap {{
+        font-family: 'Baloo 2', cursive;
+        font-weight: 800;
+        font-size: clamp(28px, 3vw, 42px);
+        line-height: 1;
+        letter-spacing: .005em;
+        white-space: nowrap;
+    }}
+    .title-wrap .tb {{
+        color: {ORANGE};
+        -webkit-text-stroke: 5px #fff;
+        paint-order: stroke fill;
+        filter: drop-shadow(2px 2px 0 {ORANGE_DARK});
+    }}
+    .title-wrap .tp {{
+        color: #fff;
+        -webkit-text-stroke: 5px {ORANGE};
+        paint-order: stroke fill;
+        filter: drop-shadow(2px 2px 0 {ORANGE_SOFT});
+        margin-left: 6px;
+    }}
+    .brand {{
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        justify-content: flex-end;
+    }}
+    .brand .r {{
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: {INK};
+        color: #fff;
+        font-family: 'Baloo 2', cursive;
+        font-weight: 800;
+        font-size: 21px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        flex-shrink: 0;
+    }}
+    .brand .r i {{ font-style: normal; color: {ORANGE}; }}
+    .brand .wm {{ line-height: 1.05; text-align: left; }}
+    .brand .wm b {{
+        display: block;
+        font-family: 'Baloo 2', cursive;
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: .02em;
+        color: {INK};
+    }}
+    .brand .wm span {{
+        display: block;
+        font-size: 9px;
+        letter-spacing: .26em;
+        color: {ORANGE};
+        font-weight: 700;
+    }}
     .block-container {{
         padding-top: 3.6rem;
         padding-bottom: 1.5rem;
@@ -252,13 +320,18 @@ phase_name, phase_desc = get_phase(pct)
 
 st.markdown(
     f"""
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:10px;">
-        <div>
-            <span style="font-family:sans-serif;font-weight:800;font-size:32px;color:{ORANGE};">
-            BINGO PEAK BEHAVIOR</span>
-            <div style="font-size:13px;color:#8a6a55;font-weight:600;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+        <div class="title-wrap">
+            <span class="tb">BINGO</span><span class="tp">PEAK BEHAVIOR</span>
+        </div>
+        <div class="brand">
+            <div class="r">R<i>.</i></div>
+            <div class="wm"><b>REVALUE</b><span>ACADEMY</span></div>
+        </div>
+    </div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:2px;margin-bottom:10px;">
+        <div style="font-size:13px;color:#8a6a55;font-weight:600;max-width:640px;">
             Centang yang udah kelihatan minggu ini — makin banyak kena, makin mahal harga optimisme yang lagi lo bayar.
-            </div>
         </div>
         <div style="text-align:right;min-width:280px;">
             <span style="font-weight:800;font-size:26px;color:{INK};">{total_checked} / {total} kena</span>
