@@ -120,6 +120,7 @@ st.markdown(
         min-height: 0;
         margin-bottom: 8px;
         background: #fff;
+        color: {INK};
         display: flex;
         align-items: center;
         gap: 9px;
@@ -166,6 +167,7 @@ st.markdown(
     .tile-box.highlight {{
         background: {ORANGE_PALE};
         border-color: {ORANGE_DARK};
+        color: {INK};
     }}
     .tile-box.highlight.on {{
         background: {ORANGE};
