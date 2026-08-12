@@ -3,6 +3,7 @@ import requests
 from datetime import datetime
 
 from tiles import TILES, TILES_BY_CODE, CATEGORIES, get_phase
+from icons import ICON_DEFS
 
 st.set_page_config(
     page_title="Bingo Peak Behavior — Revalue Academy",
@@ -26,6 +27,12 @@ st.markdown(
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
     """,
+    unsafe_allow_html=True,
+)
+
+# ikon-ikon dari kartu asli, ditaruh tersembunyi, direferensikan tiap tile via <use>
+st.markdown(
+    f'<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{ICON_DEFS}</defs></svg>',
     unsafe_allow_html=True,
 )
 
@@ -105,25 +112,57 @@ st.markdown(
     /* ---------- Mobile default (< 768px): 1 kolom, tinggi kotak nyesuain teks ---------- */
     .tile-box {{
         box-sizing: border-box;
+        position: relative;
         border: 2.5px solid {ORANGE};
         border-radius: 9px;
-        padding: 12px 14px;
+        padding: 10px 12px;
         height: auto;
         min-height: 0;
         margin-bottom: 8px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        transition: background .12s ease, transform .12s ease;
+    }}
+    .tile-box .txt {{
+        flex: 1 1 auto;
+        font-family: 'Baloo 2', cursive;
         font-weight: 700;
         font-size: 14px;
-        line-height: 1.3;
-        color: {INK};
-        background: #fff;
-        display: block;
-        transition: background .12s ease;
+        line-height: 1.28;
+        color: inherit;
+    }}
+    .tile-box .art {{
+        flex: 0 0 auto;
+        width: 30px;
+        height: 30px;
+        opacity: .95;
+    }}
+    .tile-box .stamp {{
+        display: none;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        background: rgba(0,0,0,.18);
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        color: #fff;
+        line-height: 1;
     }}
     .tile-box.on {{
         background: {ORANGE};
         color: #fff;
         border-color: {ORANGE_DARK};
+        transform: rotate(-.5deg);
     }}
+    .tile-box.on .art {{ filter: brightness(0) invert(1); opacity: .9; }}
+    .tile-box.on .stamp {{ display: flex; }}
     .tile-box.highlight {{
         background: {ORANGE_PALE};
         border-color: {ORANGE_DARK};
@@ -135,7 +174,8 @@ st.markdown(
     .cat-header {{
         box-sizing: border-box;
         text-align: center;
-        font-weight: 800;
+        font-family: 'Baloo 2', cursive;
+        font-weight: 700;
         letter-spacing: .06em;
         text-transform: uppercase;
         font-size: 12px;
@@ -176,15 +216,20 @@ st.markdown(
        teks dikecilin & kotak dikasih tinggi TETAP biar rapi sebaris ---------- */
     @media (min-width: 768px) and (max-width: 1279px) {{
         .tile-box {{
-            height: 96px;
-            font-size: 11.5px;
-            line-height: 1.25;
-            padding: 8px 10px;
+            height: 92px;
+            padding: 7px 9px;
+            gap: 6px;
+            align-items: flex-start;
+        }}
+        .tile-box .txt {{
+            font-size: 11px;
+            line-height: 1.22;
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 4;
+            -webkit-line-clamp: 5;
             overflow: hidden;
         }}
+        .tile-box .art {{ width: 22px; height: 22px; margin-top: 1px; }}
         .cat-header {{
             font-size: 9.5px;
             letter-spacing: .02em;
@@ -197,15 +242,19 @@ st.markdown(
        biar rasio teks:kotak enak dibaca, tinggi kotak tetap biar sebaris ---------- */
     @media (min-width: 1280px) {{
         .tile-box {{
-            height: 78px;
-            font-size: 15.5px;
-            line-height: 1.28;
-            padding: 12px 16px;
+            height: 80px;
+            padding: 10px 14px;
+            gap: 10px;
+        }}
+        .tile-box .txt {{
+            font-size: 14.5px;
+            line-height: 1.26;
             display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 3;
             overflow: hidden;
         }}
+        .tile-box .art {{ width: 38px; height: 38px; }}
         .cat-header {{
             font-size: 13px;
             letter-spacing: .05em;
@@ -364,9 +413,18 @@ for col, (cat_code, cat_name) in zip(cols, CATEGORIES):
                 css_class += " highlight"
             if is_on:
                 css_class += " on"
-            mark = "✅ " if is_on else ""
+            icon_id = t.get("icon", "")
+            icon_html = (
+                f'<svg class="art" viewBox="0 0 64 64" aria-hidden="true"><use href="#{icon_id}"></use></svg>'
+                if icon_id
+                else ""
+            )
             st.markdown(
-                f'<div class="{css_class}">{mark}{t["text"]}</div>',
+                f'<div class="{css_class}">'
+                f'<span class="txt">{t["text"]}</span>'
+                f"{icon_html}"
+                f'<span class="stamp">&#10003;</span>'
+                f"</div>",
                 unsafe_allow_html=True,
             )
             if st.session_state.is_admin:
