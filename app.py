@@ -22,19 +22,29 @@ INK = "#3A2418"
 st.markdown(
     f"""
     <style>
+    .block-container {{
+        padding-top: 1.2rem;
+        padding-bottom: 0.6rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        max-width: 100%;
+    }}
     .stApp {{ background-color: #FFFDFB; }}
     h1, h2, h3 {{ color: {INK}; }}
+    [data-testid="stSidebar"] {{ padding-top: 1rem; }}
     .tile-box {{
-        border: 3px solid {ORANGE};
-        border-radius: 10px;
-        padding: 12px 14px;
-        min-height: 92px;
-        margin-bottom: 10px;
+        border: 2.5px solid {ORANGE};
+        border-radius: 8px;
+        padding: 6px 8px;
+        min-height: 50px;
+        margin-bottom: 3px;
         font-weight: 700;
-        font-size: 15px;
-        line-height: 1.25;
+        font-size: 11.5px;
+        line-height: 1.15;
         color: {INK};
         background: #fff;
+        display: flex;
+        align-items: center;
         transition: background .12s ease;
     }}
     .tile-box.on {{
@@ -53,30 +63,44 @@ st.markdown(
     .cat-header {{
         text-align: center;
         font-weight: 800;
-        letter-spacing: .08em;
+        letter-spacing: .06em;
         text-transform: uppercase;
-        font-size: 12.5px;
+        font-size: 10.5px;
         color: {ORANGE_DARK};
         background: {ORANGE_PALE};
-        border: 2px solid {ORANGE_SOFT};
+        border: 1.5px solid {ORANGE_SOFT};
         border-radius: 999px;
-        padding: 6px 8px;
-        margin-bottom: 10px;
+        padding: 3px 6px;
+        margin-bottom: 5px;
     }}
     div.stButton > button {{
         width: 100%;
-        border: 2px solid {ORANGE};
+        border: 1.5px solid {ORANGE};
         background: #fff;
         color: {ORANGE_DARK};
         font-weight: 700;
-        font-size: 12.5px;
-        padding: 4px 0;
-        margin-top: -4px;
-        margin-bottom: 14px;
+        font-size: 10px;
+        padding: 1px 0;
+        min-height: 0;
+        line-height: 1.6;
+        margin-top: -1px;
+        margin-bottom: 4px;
     }}
     div.stButton > button:hover {{
         background: {ORANGE_PALE};
         border-color: {ORANGE_DARK};
+    }}
+    .cat-count {{
+        text-align: center;
+        font-weight: 700;
+        font-size: 11px;
+        color: {ORANGE_DARK};
+        margin-top: 2px;
+    }}
+    .thin-rule {{
+        border: none;
+        border-top: 1px solid {ORANGE_SOFT};
+        margin: 8px 0;
     }}
     </style>
     """,
@@ -176,7 +200,7 @@ except Exception as e:
     st.stop()
 
 # ---------------------------------------------------------------------------
-# HEADER
+# HEADER (dipadetin jadi 1 baris biar hemat tempat)
 # ---------------------------------------------------------------------------
 total_checked = sum(state.values())
 total = len(TILES)
@@ -185,25 +209,24 @@ phase_name, phase_desc = get_phase(pct)
 
 st.markdown(
     f"""
-    <div style="margin-bottom:4px;">
-        <span style="font-family:sans-serif;font-weight:800;font-size:38px;color:{ORANGE};">
-        BINGO PEAK BEHAVIOR</span>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:6px;">
+        <div>
+            <span style="font-family:sans-serif;font-weight:800;font-size:26px;color:{ORANGE};">
+            BINGO PEAK BEHAVIOR</span>
+            <div style="font-size:11.5px;color:#8a6a55;font-weight:600;">
+            Centang yang udah kelihatan minggu ini — makin banyak kena, makin mahal harga optimisme yang lagi lo bayar.
+            </div>
+        </div>
+        <div style="text-align:right;min-width:260px;">
+            <span style="font-weight:800;font-size:20px;color:{INK};">{total_checked} / {total} kena</span>
+            <span style="font-weight:700;font-size:12.5px;color:{ORANGE_DARK};"> ({pct*100:.0f}%)</span>
+            <div style="font-size:12px;font-weight:700;color:{ORANGE_DARK};">Fase pasar: {phase_name} — {phase_desc}</div>
+        </div>
     </div>
+    <hr class="thin-rule">
     """,
     unsafe_allow_html=True,
 )
-st.caption(
-    "Centang yang udah kelihatan minggu ini. Makin banyak yang kena, makin mahal harga optimisme yang lagi lo bayar."
-)
-
-col_a, col_b = st.columns([1, 2])
-with col_a:
-    st.metric("Overall kena", f"{total_checked} / {total}", f"{pct*100:.0f}%")
-with col_b:
-    st.progress(min(pct, 1.0))
-    st.markdown(f"**Fase pasar: {phase_name}** — {phase_desc}")
-
-st.markdown("---")
 
 # ---------------------------------------------------------------------------
 # GRID
@@ -223,14 +246,8 @@ for col, (cat_code, cat_name) in zip(cols, CATEGORIES):
             if is_on:
                 css_class += " on"
             mark = "✅ " if is_on else ""
-            sub = ""
-            if is_on and meta.get(code, {}).get("by"):
-                sub = (
-                    f'<div style="font-size:11px;font-weight:600;opacity:.85;margin-top:4px;">'
-                    f'oleh {meta[code]["by"]} · {meta[code]["at"]}</div>'
-                )
             st.markdown(
-                f'<div class="{css_class}">{mark}{t["text"]}{sub}</div>',
+                f'<div class="{css_class}">{mark}{t["text"]}</div>',
                 unsafe_allow_html=True,
             )
             if st.session_state.is_admin:
@@ -239,13 +256,14 @@ for col, (cat_code, cat_name) in zip(cols, CATEGORIES):
                     save_toggle(code, not is_on, by=st.session_state.admin_name)
                     st.rerun()
         st.markdown(
-            f'<div style="text-align:center;font-weight:700;color:{ORANGE_DARK};margin-top:-4px;">'
-            f"{cat_checked} / {len(cat_tiles)} kena</div>",
+            f'<div class="cat-count">{cat_checked} / {len(cat_tiles)} kena</div>',
             unsafe_allow_html=True,
         )
 
-st.markdown("---")
-st.caption(
-    "Alat observasi, bukan sinyal jual-beli. Data tersimpan bareng untuk semua member — "
-    "hanya admin yang bisa mengubah status centang."
+st.markdown('<hr class="thin-rule">', unsafe_allow_html=True)
+st.markdown(
+    f'<div style="font-size:10.5px;color:#8a6a55;">'
+    f"Alat observasi, bukan sinyal jual-beli. Data tersimpan bareng untuk semua member — "
+    f"hanya admin yang bisa mengubah status centang.</div>",
+    unsafe_allow_html=True,
 )
