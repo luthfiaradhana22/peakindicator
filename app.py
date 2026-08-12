@@ -25,9 +25,9 @@ st.markdown(
     <style>
     .block-container {{
         padding-top: 3.6rem;
-        padding-bottom: 0.6rem;
-        padding-left: 2rem;
-        padding-right: 2rem;
+        padding-bottom: 1.5rem;
+        padding-left: 2.4rem;
+        padding-right: 2.4rem;
         max-width: 100%;
     }}
     .stApp {{ background-color: #FFFDFB; }}
@@ -35,16 +35,19 @@ st.markdown(
     [data-testid="stSidebar"] {{ padding-top: 1rem; }}
     .tile-box {{
         border: 2.5px solid {ORANGE};
-        border-radius: 8px;
-        padding: 6px 8px;
-        min-height: 50px;
-        margin-bottom: 3px;
+        border-radius: 9px;
+        padding: 10px 12px;
+        height: 76px;
+        margin-bottom: 8px;
         font-weight: 700;
-        font-size: 11.5px;
-        line-height: 1.15;
+        font-size: 13.5px;
+        line-height: 1.25;
         color: {INK};
         background: #fff;
-        display: flex;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
         align-items: center;
         transition: background .12s ease;
     }}
@@ -66,13 +69,13 @@ st.markdown(
         font-weight: 800;
         letter-spacing: .06em;
         text-transform: uppercase;
-        font-size: 10.5px;
+        font-size: 12px;
         color: {ORANGE_DARK};
         background: {ORANGE_PALE};
         border: 1.5px solid {ORANGE_SOFT};
         border-radius: 999px;
-        padding: 3px 6px;
-        margin-bottom: 5px;
+        padding: 5px 8px;
+        margin-bottom: 9px;
     }}
     div.stButton > button {{
         width: 100%;
@@ -80,12 +83,12 @@ st.markdown(
         background: #fff;
         color: {ORANGE_DARK};
         font-weight: 700;
-        font-size: 10px;
-        padding: 1px 0;
+        font-size: 11.5px;
+        padding: 3px 0;
         min-height: 0;
         line-height: 1.6;
-        margin-top: -1px;
-        margin-bottom: 4px;
+        margin-top: -3px;
+        margin-bottom: 9px;
     }}
     div.stButton > button:hover {{
         background: {ORANGE_PALE};
@@ -101,7 +104,7 @@ st.markdown(
     .thin-rule {{
         border: none;
         border-top: 1px solid {ORANGE_SOFT};
-        margin: 8px 0;
+        margin: 10px 0;
     }}
     </style>
     """,
@@ -210,18 +213,18 @@ phase_name, phase_desc = get_phase(pct)
 
 st.markdown(
     f"""
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:6px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:10px;">
         <div>
-            <span style="font-family:sans-serif;font-weight:800;font-size:26px;color:{ORANGE};">
+            <span style="font-family:sans-serif;font-weight:800;font-size:32px;color:{ORANGE};">
             BINGO PEAK BEHAVIOR</span>
-            <div style="font-size:11.5px;color:#8a6a55;font-weight:600;">
+            <div style="font-size:13px;color:#8a6a55;font-weight:600;">
             Centang yang udah kelihatan minggu ini — makin banyak kena, makin mahal harga optimisme yang lagi lo bayar.
             </div>
         </div>
-        <div style="text-align:right;min-width:260px;">
-            <span style="font-weight:800;font-size:20px;color:{INK};">{total_checked} / {total} kena</span>
-            <span style="font-weight:700;font-size:12.5px;color:{ORANGE_DARK};"> ({pct*100:.0f}%)</span>
-            <div style="font-size:12px;font-weight:700;color:{ORANGE_DARK};">Fase pasar: {phase_name} — {phase_desc}</div>
+        <div style="text-align:right;min-width:280px;">
+            <span style="font-weight:800;font-size:26px;color:{INK};">{total_checked} / {total} kena</span>
+            <span style="font-weight:700;font-size:14px;color:{ORANGE_DARK};"> ({pct*100:.0f}%)</span>
+            <div style="font-size:14px;font-weight:700;color:{ORANGE_DARK};">Fase pasar: {phase_name} — {phase_desc}</div>
         </div>
     </div>
     <hr class="thin-rule">
