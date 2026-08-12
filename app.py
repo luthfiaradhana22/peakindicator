@@ -33,22 +33,22 @@ st.markdown(
     .stApp {{ background-color: #FFFDFB; }}
     h1, h2, h3 {{ color: {INK}; }}
     [data-testid="stSidebar"] {{ padding-top: 1rem; }}
+
+    /* ---------- Mobile default (< 768px): 1 kolom, tinggi kotak nyesuain teks ---------- */
     .tile-box {{
+        box-sizing: border-box;
         border: 2.5px solid {ORANGE};
         border-radius: 9px;
-        padding: 10px 12px;
-        height: 76px;
+        padding: 12px 14px;
+        height: auto;
+        min-height: 0;
         margin-bottom: 8px;
         font-weight: 700;
-        font-size: 13.5px;
-        line-height: 1.25;
+        font-size: 14px;
+        line-height: 1.3;
         color: {INK};
         background: #fff;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-        overflow: hidden;
-        align-items: center;
+        display: block;
         transition: background .12s ease;
     }}
     .tile-box.on {{
@@ -65,6 +65,7 @@ st.markdown(
         color: #fff;
     }}
     .cat-header {{
+        box-sizing: border-box;
         text-align: center;
         font-weight: 800;
         letter-spacing: .06em;
@@ -74,8 +75,11 @@ st.markdown(
         background: {ORANGE_PALE};
         border: 1.5px solid {ORANGE_SOFT};
         border-radius: 999px;
-        padding: 5px 8px;
+        padding: 6px 8px;
         margin-bottom: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }}
     div.stButton > button {{
         width: 100%;
@@ -83,8 +87,8 @@ st.markdown(
         background: #fff;
         color: {ORANGE_DARK};
         font-weight: 700;
-        font-size: 11.5px;
-        padding: 3px 0;
+        font-size: 12.5px;
+        padding: 4px 0;
         min-height: 0;
         line-height: 1.6;
         margin-top: -3px;
@@ -94,17 +98,52 @@ st.markdown(
         background: {ORANGE_PALE};
         border-color: {ORANGE_DARK};
     }}
-    .cat-count {{
-        text-align: center;
-        font-weight: 700;
-        font-size: 11px;
-        color: {ORANGE_DARK};
-        margin-top: 2px;
-    }}
     .thin-rule {{
         border: none;
         border-top: 1px solid {ORANGE_SOFT};
         margin: 10px 0;
+    }}
+
+    /* ---------- Tablet / iPad portrait (768px–1279px): kolom mulai berdampingan,
+       teks dikecilin & kotak dikasih tinggi TETAP biar rapi sebaris ---------- */
+    @media (min-width: 768px) and (max-width: 1279px) {{
+        .tile-box {{
+            height: 96px;
+            font-size: 11.5px;
+            line-height: 1.25;
+            padding: 8px 10px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 4;
+            overflow: hidden;
+        }}
+        .cat-header {{
+            font-size: 9.5px;
+            letter-spacing: .02em;
+            padding: 5px 4px;
+            min-height: 32px;
+        }}
+    }}
+
+    /* ---------- Desktop lebar (>= 1280px): kolom lega, teks digedein
+       biar rasio teks:kotak enak dibaca, tinggi kotak tetap biar sebaris ---------- */
+    @media (min-width: 1280px) {{
+        .tile-box {{
+            height: 78px;
+            font-size: 15.5px;
+            line-height: 1.28;
+            padding: 12px 16px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+        }}
+        .cat-header {{
+            font-size: 13px;
+            letter-spacing: .05em;
+            padding: 6px 10px;
+            min-height: 30px;
+        }}
     }}
     </style>
     """,
