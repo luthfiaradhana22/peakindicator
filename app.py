@@ -132,7 +132,7 @@ st.markdown(
         font-weight: 700;
         font-size: 14px;
         line-height: 1.28;
-        color: inherit;
+        color: {INK} !important;
     }}
     .tile-box .art {{
         flex: 0 0 auto;
@@ -162,6 +162,7 @@ st.markdown(
         border-color: {ORANGE_DARK};
         transform: rotate(-.5deg);
     }}
+    .tile-box.on .txt {{ color: #fff !important; }}
     .tile-box.on .art {{ filter: brightness(0) invert(1); opacity: .9; }}
     .tile-box.on .stamp {{ display: flex; }}
     .tile-box.highlight {{
@@ -169,10 +170,12 @@ st.markdown(
         border-color: {ORANGE_DARK};
         color: {INK};
     }}
+    .tile-box.highlight .txt {{ color: {INK} !important; }}
     .tile-box.highlight.on {{
         background: {ORANGE};
         color: #fff;
     }}
+    .tile-box.highlight.on .txt {{ color: #fff !important; }}
     .cat-header {{
         box-sizing: border-box;
         text-align: center;
