@@ -8,6 +8,7 @@ st.set_page_config(
     page_title="Bingo Peak Behavior — Revalue Academy",
     page_icon="🎯",
     layout="wide",
+    initial_sidebar_state="collapsed",
 )
 
 # ---------------------------------------------------------------------------
@@ -23,7 +24,7 @@ st.markdown(
     f"""
     <style>
     .block-container {{
-        padding-top: 1.2rem;
+        padding-top: 3.6rem;
         padding-bottom: 0.6rem;
         padding-left: 2rem;
         padding-right: 2rem;
@@ -234,9 +235,12 @@ st.markdown(
 cols = st.columns(5)
 for col, (cat_code, cat_name) in zip(cols, CATEGORIES):
     with col:
-        st.markdown(f'<div class="cat-header">{cat_name}</div>', unsafe_allow_html=True)
         cat_tiles = [t for t in TILES if t["cat"] == cat_code]
         cat_checked = sum(state[t["code"]] for t in cat_tiles)
+        st.markdown(
+            f'<div class="cat-header">{cat_name} · {cat_checked}/{len(cat_tiles)}</div>',
+            unsafe_allow_html=True,
+        )
         for t in cat_tiles:
             code = t["code"]
             is_on = state[code]
@@ -255,10 +259,6 @@ for col, (cat_code, cat_name) in zip(cols, CATEGORIES):
                 if st.button(label, key=f"btn_{code}", use_container_width=True):
                     save_toggle(code, not is_on, by=st.session_state.admin_name)
                     st.rerun()
-        st.markdown(
-            f'<div class="cat-count">{cat_checked} / {len(cat_tiles)} kena</div>',
-            unsafe_allow_html=True,
-        )
 
 st.markdown('<hr class="thin-rule">', unsafe_allow_html=True)
 st.markdown(
